@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <label> <h2 id = "description">The target number is: </h2></label>
+
+    <label><h1 id = "target_number"></h1></label>
+    <h1 id = "title">Dice Roller Game. <br>
+        The closest to the target number after 6 rolls each is the winner
+        <br>(refresh the page to change the target value)</thead></h1>
+    <br>
+
+    <h3 id = "turn"></h4>
+
+    <h2 id = "player_one_points">Player 1 points: </h3>
+    <div id = 'dice1'></div>
+
+    <h2 id = "player_two_points">Player 2 points: </h3>
+    <div id = 'dice2'></div>
+
+    <button id = "roll_button" onclick = "roll()"><h1>ROLL</h1></button>
+
+
+    <style>
+
+        body{
+            background-color: #D3D3D3;
+        }
+
+        #title{
+            text-align: center;
+            font-family: Arial;
+        }
+        #description{
+            text-align: center;
+
+        }
+        #target_number{
+            text-align: center;
+        }
+
+    </style>
+
+
+    <script>
+        let rand_num = Math.floor(Math.random() * (31) + 6);
+        document.getElementById("target_number").textContent = String(rand_num);
+        document.getElementById("target_number").value = rand_num;
+
+        const image1 = document.getElementById("dice1");
+        const image2 = document.getElementById("dice2");
+
+        let p1 = 0;
+        let p2 = 0;
+        let i = 0;
+
+        function roll(){
+            let dice_roll = Math.floor(Math.random() * (6) + 1);
+
+            if (i == 12){
+                if (Math.abs(p1 - rand_num) < Math.abs(p2 - rand_num)){
+                    window.alert("Player 1 has won!");
+                }
+                else if (Math.abs(p1 - rand_num) > Math.abs(p2 - rand_num)){
+                    window.alert("Player 2 has won!");
+                }
+                else{
+                    window.alert("It's a draw!");    
+                }
+                i = 0;
+                p1 = 0;
+                p2 = 0;
+                image1.innerHTML = "";
+                image2.innerHTML = "";
+
+            }
+
+            else if (i % 2 == 0){
+                document.getElementById("turn").textContent = `Player 2's turn`;
+                p1 += dice_roll;
+                document.getElementById("player_one_points").value = p1;
+                document.getElementById("player_one_points").textContent = `Player 1 points: ${p1}`;
+
+                switch(dice_roll){
+                    case 1:
+                        image1.innerHTML = `<img src = "https://static.vecteezy.com/system/resources/previews/000/379/698/original/dice-one-vector-icon.jpg"
+                        width = "100px" height = "100px">`;
+                        break;
+                    case 2:
+                        image1.innerHTML = `<img src = "https://png.pngtree.com/png-clipart/20190516/original/pngtree-vector-dice-two-icon-png-image_3773551.jpg" 
+                        width = "100px" height = "100px">`;
+                        break;
+                    case 3:
+                        image1.innerHTML = `<img src = "https://png.pngtree.com/png-clipart/20190516/original/pngtree-vector-dice-three-icon-png-image_3773552.jpg"
+                        width = "100px" height = '100px'>`;
+                        break;
+                    case 4:
+                        image1.innerHTML = `<img src = "data:image/png;base64,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"
+                        width = "100px" height = "100px">`;
+                        break;
+                    case 5:
+                        image1.innerHTML = `<img src = "https://static.vecteezy.com/system/resources/previews/000/378/659/original/dice-five-vector-icon.jpg"
+                        width = "100px" height = "100px">`;
+                        break;
+                    case 6:
+                        image1.innerHTML = `<img src = "https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-dice-six-icon-png-image_3773555.jpg"
+                        width = "100px" height = "100px">`;
+                        break;
+                }
+
+                if (p1 == rand_num){
+                    window.alert("Player 1 has won!");
+                    i = 0;
+                    p1 = 0;
+                    p2 = 0;
+                    image1.innerHTML = "";
+                    image2.innerHTML = "";
+                }
+
+
+            }
+            else{
+                document.getElementById("turn").textContent = "Player 1's turn"
+                p2 += dice_roll;
+                document.getElementById("player_two_points").value = p2;
+                document.getElementById("player_two_points").textContent = `Player 2 points: ${p2}`;
+                
+
+                switch(dice_roll){
+                    case 1:
+                        image2.innerHTML = `<img src = "https://static.vecteezy.com/system/resources/previews/000/379/698/original/dice-one-vector-icon.jpg"
+                        width = "100px" height = "100px">`;
+                        break;
+                    case 2:
+                        image2.innerHTML = `<img src = "https://png.pngtree.com/png-clipart/20190516/original/pngtree-vector-dice-two-icon-png-image_3773551.jpg" 
+                        width = "100px" height = "100px">`;
+                        break;
+                    case 3:
+                        image2.innerHTML = `<img src = "https://png.pngtree.com/png-clipart/20190516/original/pngtree-vector-dice-three-icon-png-image_3773552.jpg"
+                        width = "100px" height = '100px'>`;
+                        break;
+                    case 4:
+                        image2.innerHTML = `<img src = "data:image/png;base64,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"
+                        width = "100px" height = "100px">`;
+                        break;
+                    case 5:
+                        image2.innerHTML = `<img src = "https://static.vecteezy.com/system/resources/previews/000/378/659/original/dice-five-vector-icon.jpg"
+                        width = "100px" height = "100px">`;
+                        break;
+                    case 6:
+                        image2.innerHTML = `<img src = "https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-dice-six-icon-png-image_3773555.jpg"
+                        width = "100px" height = "100px">`;
+                        break;
+                }
+
+                if (p2 == rand_num){
+                    window.alert("Player 2 has won!");
+                    i = 0;
+                    p1 = 0;
+                    p2 = 0;
+                    image1.innerHTML = "";
+                    image2.innerHTML = "";
+                }
+
+            }
+            if (p1 == 0 && p2 == 0){
+                document.getElementById("player_one_points").value = p1;
+                document.getElementById("player_one_points").textContent = `Player 1 points: ${p1}`;
+
+                document.getElementById("player_two_points").value = p2;
+                document.getElementById("player_two_points").textContent = `Player 2 points: ${p2}`;
+                document.getElementById("turn").textContent = "Player 1's turn";
+
+                image1.innerHTML = "";
+                image2.innerHTML = "";
+
+            }
+            else{
+                i ++;  
+            }
+        }
+
+
+
+    </script>
+
+
+    
+</body>
+</html>
